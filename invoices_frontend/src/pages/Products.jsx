@@ -1,29 +1,30 @@
-import SectionsTable from "../components/tables/SectionsTable"
-
+import ProductsTable from "../components/tables/ProductsTable"
 import BasicBreadcrumbs from "../components/mui/BasicBreadcrumbs"
-import SectionFormDialog from "../components/forms/SectionFormDialog"
+import ProductFormDialog from "../components/forms/ProductFormDialog"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addSection, fetchSections } from "../rtk/slices/SectionSlice"
+import { addProduct, fetchProducts } from "../rtk/slices/ProductSlice"
 import WithGuard from "../utils/WithGuard"
 
-const Sections = () => {
+const Products = () => {
 
-    const { sections, } = useSelector((state) => state.section)
+    const { products } = useSelector((state) => state.product)
+    const { sections } = useSelector((state) => state.section)
     const { user } = useSelector((state) => state.user)
     const name = user.name;
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchSections())
+        dispatch(fetchProducts())
     }, [dispatch])
 
 
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState({
         name: "",
-        description: ""
+        description: "",
+        section_id: ""
     })
 
     const handleClickOpen = () => {
@@ -32,12 +33,15 @@ const Sections = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const sentForm = { ...form, created_by: name }
+        let section_name = sections.filter((section) => {
+            return section.id == form.section_id
+        })
 
-        dispatch(addSection(sentForm)).unwrap().then(() => {
+        const sentForm = { ...form, section_name: section_name[0].section_name }
+        dispatch(addProduct(sentForm)).unwrap().then(() => {
             setOpen(false);
-            setForm({ name: '', description: "", created_by: "" });
-            dispatch(fetchSections())
+            setForm({ name: '', description: "", section_id: "" });
+            dispatch(fetchProducts())
         })
     };
 
@@ -48,14 +52,14 @@ const Sections = () => {
 
     return (
         <div className=" min-h-screen bg-slate-100 py-8 px-5">
-            <BasicBreadcrumbs main="Settings" page="Sections" />
+            <BasicBreadcrumbs main="Products" page="Products" />
             <div className="p-5">
 
                 <div className=" flex justify-end">
 
-                    <SectionFormDialog
-                        title="Add New Section"
-                        button="Add section"
+                    <ProductFormDialog
+                        title="Add New Product"
+                        button="Add product"
                         btnColor="blue"
                         handleClickOpen={handleClickOpen}
                         open={open}
@@ -66,8 +70,9 @@ const Sections = () => {
                         handleSubmit={handleSubmit} />
 
                 </div>
-
-                <SectionsTable sections={sections} handleChange={handleChange}
+                <ProductsTable
+                    products={products}
+                    handleChange={handleChange}
                     form={form}
                     setForm={setForm} />
             </div>
@@ -75,4 +80,4 @@ const Sections = () => {
     )
 }
 
-export default WithGuard(Sections)
+export default WithGuard(Products)

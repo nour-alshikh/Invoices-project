@@ -9,7 +9,6 @@ class InvoicesArchiveController extends Controller
 {
     public function index()
     {
-
         $invoices = Invoice::onlyTrashed()->get();
 
         return response([
@@ -29,5 +28,13 @@ class InvoicesArchiveController extends Controller
         $invoice = Invoice::onlyTrashed()->where('id', '=', $id)->restore();
 
         return response("invoice restored");
+    }
+
+    public function deleteArchived($id)
+    {
+        $invoice = Invoice::onlyTrashed()->where('id', '=', $id)->get();
+
+        $invoice->forceDelete();
+        return response("Deleted");
     }
 }

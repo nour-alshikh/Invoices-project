@@ -1,36 +1,27 @@
 import InvoicesTable from "../../components/tables/InvoicesTable"
 import BasicBreadcrumbs from "../../components/mui/BasicBreadcrumbs"
-
-const columns = [
-    { id: 'invoice_number', label: 'Invoice Number', minWidth: 170 },
-    { id: 'invoice_date', label: 'Invoice Date', minWidth: 100 },
-    { id: 'due_date', label: 'Due Date', minWidth: 100 },
-    { id: 'product', label: 'Product', minWidth: 100 },
-    { id: 'section', label: 'Section', minWidth: 100 },
-    { id: 'discount', label: 'Discount', minWidth: 100 },
-    { id: 'rate_vat', label: 'Vate_vat', minWidth: 100 },
-    { id: 'value_vat', label: 'Value_vat', minWidth: 100 },
-    { id: 'total', label: 'Total', minWidth: 100 },
-    { id: 'status', label: 'Status', minWidth: 100 },
-    { id: 'note', label: 'Note', minWidth: 100 },
-    { id: 'user', label: 'User', minWidth: 100 },
-];
-
-function createData(invoice_number, invoice_date, due_date, product, section, discount, rate_vat, value_vat, total, status, note, user) {
-
-    return { invoice_number, invoice_date, due_date, product, section, discount, rate_vat, value_vat, total, status, note, user };
-}
-
-const rows = [
-    createData('India', 'IN', 1324171354, 3287263, 'India', 'IN', 1324171354, 3287263, 'India', 'IN', 1324171354, 3287263,),
-];
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Invoices = () => {
+
+    const [rows, setRows] = useState([])
+    useEffect(() => {
+        fetchInvoices()
+    }, [])
+
+    const fetchInvoices = async () => {
+        await axios.get(`http://127.0.0.1:8000/api/invoices`).then(({ data }) => {
+            setRows(data.invoices)
+        })
+    }
     return (
         <div className=" min-h-screen bg-slate-100 py-8 px-5">
             <BasicBreadcrumbs main="Invoices" page="Invoices List" />
-            <div className="p-5">
-                <InvoicesTable columns={columns} createData={createData} rows={rows} />
+            <div className="py-2">
+                <Link to='/invoices/add-invoice' className=" py-3 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-md block w-fit my-10">Add Invoice</Link>
+                <InvoicesTable invoices={rows} showMenu={true} fetchInvoices={fetchInvoices} />
             </div>
         </div>
     )

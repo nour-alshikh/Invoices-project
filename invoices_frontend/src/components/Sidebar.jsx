@@ -37,7 +37,7 @@ const Sidebar = ({ user }) => {
                     <h3 className=' text-gray-600 font-bold'>Invoices Page</h3>
                     <div className='my-3 flex justify-start items-center'>
                         <BsFillMenuAppFill />
-                        <Link to='/dashboard' className='mx-3 font-semibold text-xl text-gray-700'>Main Dashboard</Link>
+                        <Link to='/' className='mx-3 font-semibold text-xl text-gray-700'>Main Dashboard</Link>
                     </div>
                 </div>
 

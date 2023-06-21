@@ -12,16 +12,22 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.5",
+    "@mui/styled-engine-sc": "^5.12.0",
+    "@mui/x-date-pickers": "^6.8.0",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.8",
     "framer-motion": "^10.12.16",
     "react": "^18.2.0",
+    "react-datepicker": "^4.14.0",
+    "react-datetime-picker": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.12.1",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "styled-components": "^5.3.11"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

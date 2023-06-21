@@ -62,8 +62,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Invoices
     Route::post('/invoices', [InvoiceController::class, 'store']);
+    Route::delete('/invoices/archived/{id}', [InvoicesArchiveController::class, 'deleteArchived']);
     Route::post('/invoices/{id}', [InvoiceController::class, 'update']);
     Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy']);
+
 
     Route::post('/invoice-attachments/{id}', [InvoiceAttachmentController::class, 'store']);
     Route::delete('/invoice-attachments/{id}', [InvoiceAttachmentController::class, 'destroy']);

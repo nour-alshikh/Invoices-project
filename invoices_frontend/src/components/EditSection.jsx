@@ -43,10 +43,10 @@ const EditSection = () => {
         <>
             <div className=" h-screen flex justify-center items-center flex-col">
                 <div className="px-5 mb-6 w-full">
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" name="name" onChange={handleChange} value={form.name} className=" w-full" />
+                    <TextField id="outlined-basic" label="Section" variant="outlined" name="name" onChange={handleChange} value={form.name} className=" w-full" />
                 </div>
                 <div className="px-5 mb-6 w-full">
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" name="description" onChange={handleChange} value={form.description} className=" w-full" />
+                    <TextField id="outlined-basic" label="Description" variant="outlined" name="description" onChange={handleChange} value={form.description} className=" w-full" />
                 </div>
                 <div className="flex justify-end">
                     <button onClick={handleSubmit} className='bg bg-blue-600 text-white rounded-md hover:bg-blue-700 transition px-3 py-2'>

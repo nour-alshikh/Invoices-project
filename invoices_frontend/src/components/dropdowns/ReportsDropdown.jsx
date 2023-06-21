@@ -23,7 +23,7 @@ export default function BasicMenu() {
                 onClick={handleClick}
                 className='mx-3 font-semibold text-xl text-gray-700'
             >
-                Reposts
+                Reports
             </NavLink>
             <Menu
                 id="basic-menu"
@@ -35,8 +35,8 @@ export default function BasicMenu() {
                 }}
             >
                 <div className='flex flex-col'>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' onClick={handleClose}>Invoices Reports</Link>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' onClick={handleClose}>Customer Reports</Link>
+                    <Link to='/reports/invoices-reports' className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' onClick={handleClose}>Invoices Reports</Link>
+                    <Link to='/reports/customer-reports' className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' onClick={handleClose}>Customer Reports</Link>
                 </div>
             </Menu>
         </div>

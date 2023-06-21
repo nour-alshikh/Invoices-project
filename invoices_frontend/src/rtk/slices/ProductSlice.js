@@ -3,13 +3,13 @@ import axios from 'axios'
 
 const initialState = { sections: [], loading: false, message: "", }
 
-export const addSection = createAsyncThunk('section/addSection', async (form, thunkApi) => {
+export const addProduct = createAsyncThunk('section/addProduct', async (form, thunkApi) => {
     const { rejectWithValue, getState } = thunkApi
 
     const { user } = getState()
     const token = user.token
     try {
-        let res = await axios.post(`http://127.0.0.1:8000/api/sections`, form, {
+        let res = await axios.post(`http://127.0.0.1:8000/api/products`, form, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -23,11 +23,11 @@ export const addSection = createAsyncThunk('section/addSection', async (form, th
     }
 })
 
-export const fetchSections = createAsyncThunk('section/fetchSections', async (_, thunkApi) => {
+export const fetchProducts = createAsyncThunk('section/fetchProducts', async (_, thunkApi) => {
     const { rejectWithValue } = thunkApi
 
     try {
-        let res = await axios.get(`http://127.0.0.1:8000/api/sections`)
+        let res = await axios.get(`http://127.0.0.1:8000/api/products`)
             .then((data) => {
                 return data
             })
@@ -37,11 +37,11 @@ export const fetchSections = createAsyncThunk('section/fetchSections', async (_,
     }
 })
 
-export const fetchSection = createAsyncThunk('section/fetchSection', async (id, thunkApi) => {
+export const fetchProduct = createAsyncThunk('section/fetchProduct', async (id, thunkApi) => {
     const { rejectWithValue } = thunkApi
 
     try {
-        let res = await axios.get(`http://127.0.0.1:8000/api/sections/${id}`)
+        let res = await axios.get(`http://127.0.0.1:8000/api/products/${id}`)
             .then((data) => {
                 return data
             })
@@ -52,13 +52,12 @@ export const fetchSection = createAsyncThunk('section/fetchSection', async (id, 
 })
 
 
-export const updateSection = createAsyncThunk('section/updateSection', async (form, thunkApi) => {
+export const updateProduct = createAsyncThunk('section/updateProduct', async (form, thunkApi) => {
     const { rejectWithValue, getState } = thunkApi
-
     const { user } = getState()
     const token = user.token
     try {
-        let res = await axios.post(`http://127.0.0.1:8000/api/sections/${form.id}`, form, {
+        let res = await axios.post(`http://127.0.0.1:8000/api/products/${form.id}`, form, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -72,13 +71,13 @@ export const updateSection = createAsyncThunk('section/updateSection', async (fo
     }
 })
 
-export const deleteSection = createAsyncThunk('section/deleteSection', async (id, thunkApi) => {
+export const deleteProduct = createAsyncThunk('section/deleteProduct', async (id, thunkApi) => {
     const { rejectWithValue, getState } = thunkApi
 
     const { user } = getState()
     const token = user.token
     try {
-        let res = await axios.delete(`http://127.0.0.1:8000/api/sections/${id}`, {
+        let res = await axios.delete(`http://127.0.0.1:8000/api/products/${id}`, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -92,68 +91,68 @@ export const deleteSection = createAsyncThunk('section/deleteSection', async (id
     }
 })
 
-const sectionSlice = createSlice({
-    name: "section",
+const productSlice = createSlice({
+    name: "product",
     initialState,
     reducres: {
-        clearSection: (state) => {
-            let st = state.section
-            state.section = { ...st, name: "", description: "" };
+        clearProduct: (state) => {
+            let st = state.product
+            state.product = { ...st, name: "", description: "" };
         }
     },
     extraReducers: (builder) => {
-        // addSection
-        builder.addCase(addSection.pending, (state) => {
+        // addProduct
+        builder.addCase(addProduct.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(addSection.fulfilled, (state) => {
+        builder.addCase(addProduct.fulfilled, (state) => {
             state.loading = false
         })
-        builder.addCase(addSection.rejected, (state) => {
+        builder.addCase(addProduct.rejected, (state) => {
             state.loading = false
         })
-        // fetchSections
-        builder.addCase(fetchSections.pending, (state) => {
+        // fetchProducts
+        builder.addCase(fetchProducts.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(fetchSections.fulfilled, (state, action) => {
+        builder.addCase(fetchProducts.fulfilled, (state, action) => {
             state.loading = false
-            state.sections = action.payload.data.sections
+            state.products = action.payload.data.products
         })
-        builder.addCase(fetchSections.rejected, (state) => {
+        builder.addCase(fetchProducts.rejected, (state) => {
             state.loading = false
         })
-        // fetchSection
-        builder.addCase(fetchSection.pending, (state) => {
+        // fetchProduct
+        builder.addCase(fetchProduct.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(fetchSection.fulfilled, (state) => {
+        builder.addCase(fetchProduct.fulfilled, (state) => {
             state.loading = false
         })
-        builder.addCase(fetchSection.rejected, (state) => {
+        builder.addCase(fetchProduct.rejected, (state) => {
             state.loading = false
         })
-        // updateSection
-        builder.addCase(updateSection.pending, (state) => {
+        // updateProduct
+        builder.addCase(updateProduct.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(updateSection.fulfilled, (state) => {
+        builder.addCase(updateProduct.fulfilled, (state) => {
             state.loading = false
         })
-        builder.addCase(updateSection.rejected, (state) => {
+        builder.addCase(updateProduct.rejected, (state) => {
             state.loading = false
         })
-        // deleteSection
-        builder.addCase(deleteSection.pending, (state) => {
+        // deleteProduct
+        builder.addCase(deleteProduct.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(deleteSection.fulfilled, (state) => {
+        builder.addCase(deleteProduct.fulfilled, (state) => {
             state.loading = false
         })
-        builder.addCase(deleteSection.rejected, (state) => {
+        builder.addCase(deleteProduct.rejected, (state) => {
             state.loading = false
         })
     }
 })
 
-export default sectionSlice.reducer
+export default productSlice.reducer

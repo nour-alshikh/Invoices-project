@@ -29,24 +29,25 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $invoice = Invoice::create([
-            "invoice_number" => $request->invoice_number,
-            "invoice_date" => $request->invoice_date,
-            "due_date" => $request->due_date,
-            "product" => $request->product,
-            "section_id" => $request->section_id,
-            "amount_collection" => $request->amount_collection,
-            "amount_commission" => $request->amount_commission,
-            "discount" => $request->discount,
-            "rate_vat" => $request->rate_vat,
-            "value_vat" => $request->value_vat,
-            "total" => $request->total,
-            "note" => $request->note,
-            "user" => $request->user,
-            "status" => "unpaid",
-            "value_status" => 2,
-        ]);
+        $invoice = new Invoice;
+        $invoice->invoice_number = $request->invoice_number;
+        $invoice->invoice_date = $request->invoice_date;
+        $invoice->due_date = $request->due_date;
+        $invoice->product = $request->product;
+        $invoice->section_id = $request->section_id;
+        $invoice->amount_collection = $request->amount_collection;
+        $invoice->amount_commission = $request->amount_commission;
+        $invoice->discount = $request->discount;
+        $invoice->rate_vat = $request->rate_vat;
+        $invoice->value_vat = $request->value_vat;
+        $invoice->total = $request->total;
+        $invoice->note = $request->note;
+        $invoice->user = $request->user;
+        $invoice->status = "unpaid";
+        $invoice->value_status = 2;
+        $invoice->section = $request->section;
 
+        $invoice->save();
 
         $invoice_id = Invoice::latest()->first()->id;
         $invoice_details = InvoiceDetail::create([

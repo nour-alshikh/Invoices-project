@@ -35,7 +35,7 @@ export default function BasicMenu() {
             >
                 <div className='flex flex-col'>
                     <Link to='/sections' className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' onClick={handleClose}>Sections</Link>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' onClick={handleClose}>Products</Link>
+                    <Link to='/products' className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' onClick={handleClose}>Products</Link>
                 </div>
             </Menu>
         </div>

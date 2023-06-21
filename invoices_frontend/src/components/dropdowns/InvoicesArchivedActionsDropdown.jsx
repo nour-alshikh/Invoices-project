@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { Link, NavLink } from 'react-router-dom';
+import { BsFillArrowDownSquareFill } from "react-icons/bs";
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function BasicMenu() {
+export default function BasicMenu({ id, fetchInvoices }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -12,6 +14,19 @@ export default function BasicMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const { token } = useSelector((state) => state.user)
+
+    const handleRestore = () => {
+        axios.get(`http://127.0.0.1:8000/api/restore-archive/${id}`, {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        }).then(() => {
+            handleClose()
+            fetchInvoices()
+        })
+    }
 
     return (
         <div>
@@ -23,7 +38,7 @@ export default function BasicMenu() {
                 onClick={handleClick}
                 className='mx-3 font-semibold text-xl text-gray-700 cursor-pointer'
             >
-                Invoices
+                <BsFillArrowDownSquareFill color=' #2563eb' />
             </div>
             <Menu
 
@@ -36,11 +51,9 @@ export default function BasicMenu() {
                 }}
             >
                 <div className='flex flex-col'>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' to='/invoices' onClick={handleClose}>Invoices List</Link>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' to='/invoices/status/paid' onClick={handleClose}>Paid Invoices</Link>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' to='/invoices/status/unpaid' onClick={handleClose}>Unpaid Invoices</Link>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' to='/invoices/status/partially-paid' onClick={handleClose}>Partially Paid Invoices</Link>
-                    <Link className='px-5 py-2 hover:bg-slate-200 hover:text-blue-600' to='/invoices/archived' onClick={handleClose}>Archived Invoices</Link>
+                    <button className='px-5 py-2 hover:bg-slate-200 hover:text-green-600' onClick={handleRestore}>Restore Invoice</button>
+                    {/* <button className='px-5 py-2 hover:bg-slate-200 hover:text-red-600' onClick={handleDelete}>Delete Invoice</button> */}
+
                 </div>
             </Menu>
         </div>

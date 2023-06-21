@@ -4,11 +4,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSection, fetchSections } from '../../rtk/slices/SectionSlice'
+import { addProduct, fetchProducts } from '../../rtk/slices/ProductSlice'
 import { useRef, useState } from 'react';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 export default function FormDialog({ title, button, btnColor, id, handleClickOpen, open, setOpen, form, setForm, handleChange, handleSubmit, modalRef, test }) {
 
+    const { sections } = useSelector((state) => state.section)
     const { user } = useSelector((state) => state.user)
     const name = user.name;
 
@@ -17,9 +19,6 @@ export default function FormDialog({ title, button, btnColor, id, handleClickOpe
     const handleClose = () => {
         setOpen(false);
     };
-
-
-
     return (
         <div  >
             <button onClick={() => handleClickOpen(id)} className={`bg-${btnColor}-600 text-white mb-5 rounded-md hover:bg-${btnColor}-700 transition px-3 py-2`}>
@@ -43,10 +42,10 @@ export default function FormDialog({ title, button, btnColor, id, handleClickOpe
                         variant="standard"
                     />
                     <TextField
-                        style={{ minWidth: '350px', }}
+                        style={{ minWidth: '350px', marginBottom: "30px" }}
                         autoFocus
                         margin="dense"
-                        id="desc"
+                        id="description"
                         onChange={handleChange}
                         value={form?.description}
                         name='description'
@@ -55,6 +54,22 @@ export default function FormDialog({ title, button, btnColor, id, handleClickOpe
                         fullWidth
                         variant="standard"
                     />
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Section</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Section"
+                            onChange={handleChange}
+                            name='section_id'
+                        >
+                            {
+                                sections.map((section) => (
+                                    <MenuItem value={section.id}>{section.section_name}</MenuItem>
+                                ))
+                            }
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <button className=' bg-red-600 text-white rounded-md hover:bg-red-700 transition px-3 py-2 my-5 ' onClick={handleClose}>Cancel</button>
