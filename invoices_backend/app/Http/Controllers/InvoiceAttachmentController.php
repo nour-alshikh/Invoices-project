@@ -2,74 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\Invoices\InvoiceAttachmentRepositoryInterface;
 use App\Models\InvoiceAttachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class InvoiceAttachmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private $invoice;
+
+    public function __construct(InvoiceAttachmentRepositoryInterface $invoice)
     {
-        //
+        $this->invoice = $invoice;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store($id, Request $request)
     {
-        $invoice_id = $id;
-        $file = $request->file('file');
-        $file_name = $file->getClientOriginalExtension();
 
-        $invoice_number = $request->invoice_number;
-
-        $attachments = new InvoiceAttachment();
-        $attachments->file_name = $file_name;
-        $attachments->invoice_number = $invoice_number;
-        $attachments->created_by = $request->user;
-        $attachments->invoice_id = $invoice_id;
-        $attachments->save();
-
-        $fileName = $request->file->getClientOriginalExtension();
-        $request->file->move(public_path('attachments/' . $request->$invoice_number), $fileName);
-
-        return response("Attachment Added");
+        return $this->invoice->store($id, $request);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $invoiceAttachment = InvoiceAttachment::where('invoice_id', '=', $id)->get();
-
-        return response(
-            [
-                'invoice_details' => $invoiceAttachment
-            ]
-        );
+        return $this->invoice->show($id);;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, InvoiceAttachment $invoiceAttachment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id, Request $request)
     {
-        $invoice_attachment = InvoiceAttachment::find($id);
-        $invoice_attachment->delete();
-
-        Storage::disk('public_uploads')->delete($request->invoice_number . '/' . $request->file_name);
+        return $this->invoice->destroy($id, $request);
     }
 }

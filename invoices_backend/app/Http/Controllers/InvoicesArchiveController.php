@@ -2,39 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
-use Illuminate\Http\Request;
+use App\Interfaces\Invoices\InvoicesArchiveRepositoryInterface;
 
 class InvoicesArchiveController extends Controller
 {
+    private $invoice;
+
+    public function __construct(InvoicesArchiveRepositoryInterface $invoice)
+
+    {
+        $this->invoice = $invoice;
+    }
     public function index()
     {
-        $invoices = Invoice::onlyTrashed()->get();
-
-        return response([
-            'invoices' => $invoices
-        ]);
+        return $this->invoice->index();
     }
 
     public function addToArchive($id)
     {
-        $invoice = Invoice::find($id);
-        $invoice->delete();
-        return response("added to archive");
+        return $this->invoice->addToArchive($id);
     }
 
     public function restoreArchive($id)
     {
-        $invoice = Invoice::onlyTrashed()->where('id', '=', $id)->restore();
-
-        return response("invoice restored");
+        return $this->invoice->restoreArchive($id);
     }
 
     public function deleteArchived($id)
     {
-        $invoice = Invoice::onlyTrashed()->where('id', '=', $id)->get();
-
-        $invoice->forceDelete();
-        return response("Deleted");
+        return $this->invoice->deleteArchived($id);
     }
 }

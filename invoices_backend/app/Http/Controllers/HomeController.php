@@ -2,28 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Interfaces\Home\HomeRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Notification;
 
 class HomeController extends Controller
 {
+    private $home;
+
+    public function __construct(HomeRepositoryInterface $home)
+    {
+        $this->home = $home;
+    }
     public function getNotifications(Request $request)
     {
-        $user = User::where('name', '=', $request->user)->first();
-
-        return $user->unreadNotifications;
+        return $this->home->getNotifications($request);
     }
 
     public function markAsRead(Request $request)
     {
-        $user = User::where('name', '=', $request->user)->first();
-
-        $userUnreadNotification = $user->unreadNotifications;
-
-        if ($userUnreadNotification) {
-            $userUnreadNotification->markAsRead();
-            return "Done";
-        }
+        return $this->home->markAsRead($request);
     }
 }

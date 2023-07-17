@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\Products\ProductRepositoryInterface;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    private $products;
+
+    public function __construct(ProductRepositoryInterface $products)
+
+    {
+        $this->products = $products;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::all();
-        return response([
-            'products' => $products
-        ]);
+        return $this->products->index();
     }
 
     /**
@@ -23,18 +29,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $fields = $request->all();
-
-        $product = Product::create([
-            'product_name' => $fields['name'],
-            'description' => $fields['description'],
-            'section_id' => $fields['section_id'],
-            'section_name' => $fields['section_name']
-        ]);
-
-        return response([
-            'product' => $product
-        ]);
+        return $this->products->store($request);
     }
 
     /**
@@ -42,10 +37,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
-        return response([
-            'product' => $product
-        ]);
+        return $this->products->show($id);
     }
 
     /**
@@ -53,17 +45,7 @@ class ProductController extends Controller
      */
     public function update($id, Request $request)
     {
-        $product = Product::find($id);
-
-        $product->product_name = $request->name;
-        $product->description = $request->description;
-        $product->section_id = $request->section_id;
-        $product->section_name = $request->section_name;
-        $product->save();
-
-        return response([
-            'product' => $product
-        ]);
+        return $this->products->show($id, $request);
     }
 
     /**
@@ -71,19 +53,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-
-        $product->delete();
-
-        return response("product$product Deleted");
+        return $this->products->show($id);
     }
 
     public function getProducts($id)
     {
-        $products = Product::where('section_id', '=', $id)->get();
-
-        return response([
-            'products' => $products
-        ]);
+        return $this->products->getProducts($id);
     }
 }

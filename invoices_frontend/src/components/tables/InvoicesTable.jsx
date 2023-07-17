@@ -12,7 +12,18 @@ import { useSelector } from 'react-redux';
 import InvoicesActionsDropdown from '../../components/dropdowns/InvoicesActionsDropdown'
 import InvoicesArchivedActionsDropdown from '../../components/dropdowns/InvoicesArchivedActionsDropdown'
 
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
+import { useReactToPrint } from 'react-to-print';
+
 export default function StickyHeadTable({ invoices, showMenu, fetchInvoices, fetchArchived }) {
+
+    const componentRef = React.useRef();
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -29,8 +40,22 @@ export default function StickyHeadTable({ invoices, showMenu, fetchInvoices, fet
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <div className='flex justify-start  m-4 gap-4'>
+                <ReactHTMLTableToExcel
+                    id="test-table-xls-button"
+                    className=" py-3 px-5 download-table-xls-button bg-green-600 hover:bg-green-700 text-white rounded-md block w-fit"
+                    table="table-to-xls"
+                    filename="table"
+                    sheet="tablexls"
+                    buttonText="Export Excel" />
+
+                <button onClick={handlePrint} className="py-3 px-5 bg-red-600 hover:bg-red-700 text-white rounded-md block w-fit">
+                    Export PDF
+                </button>
+
+            </div>
             <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
+                <Table stickyHeader aria-label="sticky table" id="table-to-xls" ref={componentRef}>
                     <TableHead>
                         <TableRow>
                             <TableCell
